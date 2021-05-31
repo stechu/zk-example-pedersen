@@ -39,6 +39,7 @@ impl ConstraintSynthesizer<Fq> for PedersenComCircuit {
         #[cfg(debug_assertions)]
         println!("is setup mode?: {}", cs.is_in_setup_mode());
         let _cs_no = cs.num_constraints();
+        
         // step 1. Allocate Parameters for perdersen commitment
         let param_var =
             PedersenParamVar::new_input(ark_relations::ns!(cs, "gadget_parameters"), || {
@@ -49,6 +50,7 @@ impl ConstraintSynthesizer<Fq> for PedersenComCircuit {
         #[cfg(debug_assertions)]
         println!("cs for parameters: {}", _cs_no);
         let _cs_no = cs.num_constraints();
+        
         // step 2. Allocate inputs
         let mut input_var = vec![];
         for input_byte in self.input.iter() {
@@ -81,7 +83,6 @@ impl ConstraintSynthesizer<Fq> for PedersenComCircuit {
         let _cs_no = cs.num_constraints();
 
         // circuit to compare the commited value with supplied value
-
         let commitment_var2 =
             PedersenCommitmentVar::new_input(ark_relations::ns!(cs, "gadget_commitment"), || {
                 Ok(self.commit)
@@ -102,7 +103,7 @@ impl ConstraintSynthesizer<Fq> for PedersenComCircuit {
 #[allow(dead_code)]
 pub fn sanity_check() -> bool {
     let mut rng = rand::thread_rng();
-    let len = 256;
+    let len = 128;
     let param = pedersen_setup(&[0u8; 32]);
     let input = vec![0u8; len];
     let open = Randomness::<JubJub>(Fr::rand(&mut rng));

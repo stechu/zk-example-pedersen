@@ -13,9 +13,9 @@ pub type JubJub = ark_ed_on_bls12_381::EdwardsProjective;
 //=======================
 // pedersen hash and related defintions
 // the hash function is defined over the JubJub curve
-// this parameter allows us to commit to 256 * 8 = 2048 bits
+// this parameter allows us to commit to 256 * 4 = 1024 bits
 //=======================
-pub const PERDERSON_WINDOW_SIZE: usize = 8;
+pub const PERDERSON_WINDOW_SIZE: usize = 4;
 pub const PERDERSON_WINDOW_NUM: usize = 256;
 
 #[derive(Clone)]
