@@ -1,24 +1,33 @@
 mod groth_api;
-mod marlin;
+//mod marlin;
 mod pedersen;
+mod pedersen_params;
 mod r1cs;
+mod zk_params;
 
-use ark_crypto_primitives::commitment::pedersen::Randomness;
-use ark_ed_on_bls12_381::*;
+use ark_bls12_381::Bls12_381;
+use ark_crypto_primitives::{commitment::pedersen::Randomness, SNARK};
+use ark_ed_on_bls12_381::Fq;
+use ark_ed_on_bls12_381::Fr;
 use ark_ff::UniformRand;
+use ark_groth16::*;
+use ark_serialize::CanonicalDeserialize;
 use groth_api::*;
-//use marlin::*;
+use manta_crypto::CommitmentParam;
+use manta_crypto::MantaSerDes;
 use pedersen::*;
+use pedersen_params::COMMIT_PARAM;
 use r1cs::*;
-use ark_serialize::CanonicalSerialize;
 use std::time::Instant;
-
+use zk_params::ZK_PARAM;
 
 fn main() {
     let start = Instant::now();
     let mut rng = rand::thread_rng();
     let len = 128;
-    let pedersen_param = pedersen_setup(&[0u8; 32]);
+
+    let pedersen_param = CommitmentParam::deserialize(COMMIT_PARAM.data);
+
     let input = vec![2u8; len];
     let open = Randomness::<JubJub>(Fr::rand(&mut rng));
     let commit = pedersen_commit(&input, &pedersen_param, &open);
@@ -34,8 +43,12 @@ fn main() {
     let elapse = start.elapsed();
     let start2 = Instant::now();
 
-    let zk_param = groth_param_gen(pedersen_param);
-    
+    // TODO: remove this and use pre-computed zk_param
+    let zk_param =
+        <Groth16<Bls12_381> as SNARK<Fq>>::ProvingKey::deserialize_uncompressed(ZK_PARAM.data)
+            .unwrap();
+    //let zk_param = groth_param_gen(pedersen_param);
+
     let elapse2 = start2.elapsed();
     let start3 = Instant::now();
     // This is the part that we want to benchmark:
@@ -44,15 +57,6 @@ fn main() {
     println!("time to prepare comm: {:?}", elapse);
     println!("time to gen groth param: {:?}", elapse2);
     println!("time to gen proof: {:?}", elapse3);
-    let mut zkparam_buf: Vec<u8> = vec! [];
-    zk_param.serialize_uncompressed(&mut zkparam_buf).unwrap();
-    println!("vk size: {}", zkparam_buf.len());
-    //println!("vk: {:?}", zkparam_buf);
-
-    let mut proof_buf: Vec<u8> = vec! [];
-    proof.serialize_uncompressed(&mut proof_buf).unwrap();
-    println!("proof size: {}", proof_buf.len());
 
     assert!(groth_verify(&zk_param, &proof, &commit));
-
 }

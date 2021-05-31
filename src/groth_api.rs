@@ -12,7 +12,9 @@ use rand_chacha::ChaCha20Rng;
 
 /// generate CRS given parameter of pedersen hash
 #[allow(dead_code)]
-pub fn groth_param_gen(pedersen_param: PedersenParam) -> <Groth16<Bls12_381> as SNARK<Fq>>::ProvingKey {
+pub fn groth_param_gen(
+    pedersen_param: PedersenParam,
+) -> <Groth16<Bls12_381> as SNARK<Fq>>::ProvingKey {
     let mut rng = rand::thread_rng();
     let len = 128;
     let input = vec![0u8; len];

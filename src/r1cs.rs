@@ -39,7 +39,7 @@ impl ConstraintSynthesizer<Fq> for PedersenComCircuit {
         #[cfg(debug_assertions)]
         println!("is setup mode?: {}", cs.is_in_setup_mode());
         let _cs_no = cs.num_constraints();
-        
+
         // step 1. Allocate Parameters for perdersen commitment
         let param_var =
             PedersenParamVar::new_input(ark_relations::ns!(cs, "gadget_parameters"), || {
@@ -50,7 +50,7 @@ impl ConstraintSynthesizer<Fq> for PedersenComCircuit {
         #[cfg(debug_assertions)]
         println!("cs for parameters: {}", _cs_no);
         let _cs_no = cs.num_constraints();
-        
+
         // step 2. Allocate inputs
         let mut input_var = vec![];
         for input_byte in self.input.iter() {
