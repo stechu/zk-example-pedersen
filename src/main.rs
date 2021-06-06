@@ -45,9 +45,12 @@ fn main() {
 
     // TODO: remove this and use pre-computed zk_param
     let zk_param =
-        <Groth16<Bls12_381> as SNARK<Fq>>::ProvingKey::deserialize_uncompressed(ZK_PARAM.data)
+        <Groth16<Bls12_381> as SNARK<Fq>>::ProvingKey::deserialize_unchecked(ZK_PARAM.data)
             .unwrap();
     //let zk_param = groth_param_gen(pedersen_param);
+    //let mut g_buf = vec! [];
+    //zk_param.serialize_uncompressed(&mut g_buf).unwrap();
+    //println!("check size {}:", g_buf.len());
 
     let elapse2 = start2.elapsed();
     let start3 = Instant::now();
