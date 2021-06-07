@@ -1,30 +1,6 @@
-[package]
-name = "pedersen_example"
-version = "0.1.0"
-authors = ["zhenfeizhang <zhenfei.zhang@hotmail.com>"]
-edition = "2018"
+[workspace]
 
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-[dependencies]
-rand_chacha = "0.2.2"
-rand = "0.7.3"
-rand_xorshift = { version = "0.2" }
-
-ark-groth16 = { version = "0.2.0", default-features = false, features = [ "r1cs" ] }
-ark-r1cs-std = { version = "0.2.0", default-features = false }
-ark-relations = { version = "0.2.0", default-features = false }
-ark-ed-on-bls12-381 = { version = "0.2.0", default-features = false, features = [ "r1cs" ] }
-ark-bls12-381 = { version = "0.2.0", default-features = false, features = [ "curve" ] }
-ark-crypto-primitives = { version = "0.2.0", branch = "main", features = [ "r1cs" ] }
-ark-ff = { version = "0.2.0", default-features = false, features = [ "asm" ] }
-ark-marlin = { version = "0.2.0",  default-features = false }
-ark-poly = { version = "0.2.0", default-features = false }
-ark-poly-commit = { version = "0.2.0", default-features = false }
-ark-serialize = { version = "0.2.0", default-features = false, features = [ "derive" ] }
-
-# manta crypto dependency
-manta-crypto = { branch = "master", git = "https://github.com/Manta-Network/manta-crypto", default-features = false }
-
-blake2 = { version = "0.9", default-features = false }
+members = [
+    "pedersen",
+    "prf",
+]

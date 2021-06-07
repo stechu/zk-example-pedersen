@@ -26,7 +26,7 @@ fn main() {
     let mut rng = rand::thread_rng();
     let len = 128;
 
-    let pedersen_param = CommitmentParam::deserialize(COMMIT_PARAM.data);
+    let pedersen_param = CommitmentParam::deserialize(COMMIT_PARAM.data).unwrap();
 
     let input = vec![2u8; len];
     let open = Randomness::<JubJub>(Fr::rand(&mut rng));
