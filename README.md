@@ -1,6 +1,6 @@
 # zk-example
 
-This repo contained two examples of using arkworks zkSNARK to build two simple circuits:
+This repo contained two examples of building zero-knowlege prover-verifier instances using arkworks zkSNARK implementation:
 
 * pedersen hash example (CRH):
     ```bash
